@@ -1,9 +1,12 @@
+import runpy
+
 import logging
 from setuptools import setup, find_packages
 
+# Retrieve __version__ from the package.
 
 PACKAGE_NAME = "gradslam"
-VERSION = "0.0.1"
+VERSION = runpy.run_path("gradslam/version.py")["__version__"]
 DESCRIPTION = "gradSLAM: Dense SLAM meets Automatic Differentiation"
 URL = "<url.to.go.in.here>"
 AUTHOR = "MontrealRobotics"
@@ -56,6 +59,7 @@ if __name__ == "__main__":
             "dev": [
                 "black",
                 "flake8",
+                "nbsphinx",
                 "pytest>=4.6",
                 "pytest-cov>=2.7",
                 "sphinx==2.2.0",  # pinned to resolve issue with docutils 0.16b0.dev

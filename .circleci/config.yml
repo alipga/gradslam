@@ -28,6 +28,7 @@ references:
     run:
       name: Build docs
       command: |
+        sudo apt-get install pandoc
         sphinx-build docs/ docs/_build
 
   tests: &tests
@@ -35,6 +36,13 @@ references:
       name: Test suite
       command: |
         pytest tests/ --cov=gradslam
+
+  send_cov: &send_cov
+    run:
+      name: Send coverage
+      when: on_success
+      command: |
+        bash <(curl -s https://codecov.io/bash)
 
 jobs:
 
@@ -50,6 +58,7 @@ jobs:
       - *build_pkg
       - *build_docs
       - *tests
+      - *send_cov
 
 workflows:
   version: 2.1

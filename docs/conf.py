@@ -46,6 +46,7 @@ release = gradslam_version
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'nbsphinx',
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
     'sphinx.ext.intersphinx',
@@ -53,6 +54,7 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.todo',
     'sphinx.ext.viewcode',
+    'sphinx.ext.autosectionlabel',
 ]
 
 napoleon_use_ivar = True
@@ -81,6 +83,15 @@ todo_include_todos = True
 # Do not prepend module name to functions
 add_module_names = False
 
+# nbsphinx parameters (for jupyter notebooks)
+if os.environ.get('READTHEDOCS') == 'True':
+    nbsphinx_execute = 'never'
+else:
+    nbsphinx_execute = 'auto'
+
+    # Controls when a cell will time out (use -1 for no timeout)
+    nbsphinx_timeout = 60
+
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -91,18 +102,43 @@ add_module_names = False
 html_theme = 'sphinx_rtd_theme'
 html_theme_path = ['_themes']
 
+# Theme options are theme-specific and customize the look and feel of a theme
+# further.  For a list of options available for each theme, see the
+# documentation.
+#
+html_theme_options = {
+    'collapse_navigation': False,
+    'display_version': True,
+    'logo_only': True,
+}
+
+html_logo = '_static/img/gradslam-logo.png'
+html_favicon = '_static/img/gradslam-favicon-32x32.png'
+
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
-html_css_files = [
-    'copybutton.css',
-]
-html_js_files = [
-    'clipboard.min.js',
-    'copybutton.js',
-]
+html_context = {
+    'css_files': [
+        'https://fonts.googleapis.com/css?family=Lato',
+        # 'https://fonts.googleapis.com/css?family=Ubuntu',
+        '_static/css/pytorch_theme.css'
+    ],
+}
+# html_css_files = [
+#     'copybutton.css',
+# ]
+# html_js_files = [
+#     'clipboard.min.js',
+#     'copybutton.js',
+# ]
+
+# A list of paths that contain extra files not directly related to the documentation.
+# Relative paths are taken as relative to the configuration directory. They are copied
+# to the output directory. They will overwrite any existing file of the same name.
+html_extra_path = []
 
 
 # -- Options for LaTeX output -------------------------------------------------
@@ -162,6 +198,6 @@ texinfo_documents = [
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3', None),
-    'numpy': ('http://docs.scipy.org/doc/numpy', None),
+    'numpy': ('https://numpy.org/doc/stable', None),
     'torch': ('http://pytorch.org/docs/master', None),
 }
